@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="1200" viewBox="0 0 960 1200">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="1200" fill="url(#bg)"/>
+  <rect x="160" y="120" width="640" height="960" rx="48" fill="#171717" fill-opacity="0.88"/>
+  <circle cx="480" cy="430" r="200" fill="#f5f5f4" fill-opacity="0.92"/>
+  <circle cx="480" cy="430" r="160" fill="#d6d3d1"/>
+  <path d="M350 760C382 696 429 670 480 670C533 670 578 696 610 760V890H350V760Z" fill="#f5f5f4" fill-opacity="0.9"/>
+  <rect x="260" y="940" width="440" height="18" rx="9" fill="#e7e5e4" fill-opacity="0.55"/>
+  <rect x="338" y="982" width="284" height="14" rx="7" fill="#e7e5e4" fill-opacity="0.4"/>
+  <text x="480" y="118" text-anchor="middle" fill="#e7e5e4" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="8">CHARLES T. NZELU</text>
+</svg>
