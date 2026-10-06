@@ -1,0 +1,18 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#0B0B0D"/>
+  <rect x="110" y="120" width="980" height="660" rx="40" fill="url(#paint0_linear)"/>
+  <rect x="180" y="210" width="840" height="420" rx="28" fill="#111214" stroke="rgba(255,255,255,0.09)"/>
+  <circle cx="600" cy="420" r="150" fill="#F5F5F4" fill-opacity="0.08"/>
+  <circle cx="600" cy="420" r="86" fill="#F5F5F4" fill-opacity="0.2"/>
+  <path d="M570 375L650 420L570 465V375Z" fill="#F5F5F4"/>
+  <rect x="220" y="660" width="300" height="20" rx="10" fill="#F5F5F4" fill-opacity="0.72"/>
+  <rect x="575" y="660" width="220" height="20" rx="10" fill="#F5F5F4" fill-opacity="0.26"/>
+  <text x="220" y="160" fill="#F5F5F4" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="8">VIDEO EDITING</text>
+  <text x="220" y="710" fill="#F5F5F4" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="700">Supportive Creative Skill</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="110" y1="120" x2="1090" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17181A"/>
+      <stop offset="1" stop-color="#2E2A2B"/>
+    </linearGradient>
+  </defs>
+</svg>

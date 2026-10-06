@@ -1,22 +1,31 @@
-export const profileImage = '/images/profile/profile-placeholder.svg'
-export const cvFile = '/documents/CHARLES T. NZELU_CV.pdf'
+export const profileImage = '/images/profile/profile-placeholder.jpg'
+export const aboutSecondaryImage = '/images/profile/about-secondary.jpg'
+export const aboutSecondaryFallbackImage = '/images/profile/profile-placeholder.svg'
+export const cvFile = '/documents/CHARLES%20T.%20NZELU_CV.pdf'
+export const designPortfolio = {
+  file: '/documents/design-portfolio.pdf',
+  available: false,
+  title: 'Graphic Design Portfolio',
+  label: 'View Graphic Design Portfolio',
+}
 
 export const contactInfo = {
   email: 'nzelucharles98@gmail.com',
   phone: '+2348149368077',
-  location: 'Lagos, Ojo Itakete, Nigeria',
+  discordUrl: 'https://discord.com/users/1184858163992870996',
+  location: 'Lagos, Nigeria',
 }
 
-export const navItems = ['Home', 'About', 'Skills', 'Projects', 'Services', 'Contact']
+export const navItems = ['Home', 'About', 'Projects', 'Contact']
 
 export const aboutContent = {
   intro:
-    'I am Charles T. Nzelu, a creative professional working across graphic design, frontend development, and video editing. I enjoy shaping ideas into polished digital experiences that are both useful and visually compelling.',
+    'I am Charles T. Nzelu, a creative professional focused primarily on graphic design and frontend development, with video editing as a complementary creative skill used to support visual storytelling and digital content.',
   story: [
     'Design has always been the foundation of my creative direction. I am drawn to clean layouts, strong visual language, and thoughtful composition, because those details shape how people connect with a message or a brand.',
     'My frontend development journey grew from that same desire to make ideas feel clear and alive on the web. I like building interfaces that are responsive, intentional, and easy to use, combining structure and style in a way that feels natural.',
     'The strongest work happens when design and technology come together. That is where I work best: turning visual ideas into digital experiences that are practical, polished, and meaningful.',
-    'I continue to improve through personal projects and hands-on practice, learning from each build and refining the way I approach both form and function.',
+    'Video editing remains part of my creative toolkit, but it supports the overall work rather than defining it. I continue to refine my process through thoughtful projects and hands-on execution.',
   ],
 }
 
@@ -61,13 +70,19 @@ export const skillCategories = [
   },
 ]
 
+export const selfInitiatedLabel = 'Self-Initiated Project'
+
 export const webProjects = [
   {
     title: 'Real Estate Marketplace',
     category: 'Frontend Development',
+    ownershipLabel: selfInitiatedLabel,
+    homeDescription:
+      'An original real-estate marketplace concept I designed and developed from the ground up, covering the interface, user experience, property discovery flow, and responsive frontend.',
     description:
-      'A polished property marketplace experience focused on quality browsing, strong visual hierarchy, and smooth user interaction.',
-    tools: ['React', 'Vite', 'Tailwind CSS', 'HTML/CSS/JavaScript'],
+      'A real-estate marketplace concept I designed and developed from the ground up. I created the interface, user experience, property discovery flow, and responsive frontend as a personal project.',
+    role: ['Concept', 'UI/UX Design', 'Frontend Development'],
+    tools: ['HTML', 'CSS', 'Tailwind CSS', 'React'],
     liveLink: 'https://real-estate-marketplace-tawny.vercel.app',
     githubLink: 'https://github.com/Charles-spe/Real-estate-marketplace.git',
     image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80',
@@ -75,10 +90,14 @@ export const webProjects = [
   {
     title: 'Car Marketplace',
     category: 'Frontend Development',
+    ownershipLabel: selfInitiatedLabel,
+    homeDescription:
+      'An original automotive marketplace concept created and developed from the ground up to explore vehicle discovery, marketplace design, and responsive frontend development.',
     description:
-      'A clean automotive marketplace concept designed to present vehicle listings clearly and support a streamlined browsing experience.',
-    tools: ['React', 'Vite', 'Tailwind CSS', 'HTML/CSS/JavaScript'],
-    liveLink: null,
+      'A personal automotive marketplace concept created from the ground up to explore marketplace design, vehicle discovery, responsive interfaces, and frontend development.',
+    role: ['Concept', 'UI/UX Design', 'Frontend Development'],
+    tools: ['HTML', 'CSS', 'Tailwind CSS', 'React'],
+    liveLink: 'https://car-marketplace-db4l.vercel.app/',
     githubLink: 'https://github.com/Charles-spe/car-marketplace-.git',
     image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=80',
   },
@@ -88,84 +107,25 @@ export const frontendProjects = webProjects
 
 export const designProjects = [
   {
-    title: 'Logo Design',
+    title: 'Graphic Design Portfolio Preview',
     category: 'Graphic Design',
-    description: 'Identity exploration and visual system development for brand recognition and consistency.',
-    tools: ['Illustrator', 'Branding'],
-    image: '/images/design/logo-placeholder.svg',
-  },
-  {
-    title: 'Branding',
-    category: 'Graphic Design',
-    description: 'Brand direction, packaging, and digital identity elements designed for professional presentation.',
-    tools: ['Photoshop', 'Illustrator'],
-    image: '/images/design/branding-placeholder.svg',
-  },
-  {
-    title: 'Posters',
-    category: 'Graphic Design',
-    description: 'Promotional and editorial poster concepts built around clear messaging and visual focus.',
-    tools: ['InDesign', 'Photoshop'],
-    image: '/images/design/poster-placeholder.svg',
-  },
-  {
-    title: 'Flyers',
-    category: 'Graphic Design',
-    description: 'Event and marketing flyer layouts developed for readability and strong visual impact.',
-    tools: ['CorelDRAW', 'Illustrator'],
-    image: '/images/design/flyer-placeholder.svg',
-  },
-  {
-    title: 'Magazine Design',
-    category: 'Graphic Design',
-    description: 'Editorial page layouts with thoughtful typography, rhythm, and composition.',
-    tools: ['InDesign', 'Photoshop'],
-    image: '/images/design/magazine-placeholder.svg',
-  },
-  {
-    title: 'Social Media Design',
-    category: 'Graphic Design',
-    description: 'Platform-ready social visuals designed for attention, clarity, and consistent brand use.',
-    tools: ['Canva', 'Photoshop', 'Illustrator'],
-    image: '/images/design/social-placeholder.svg',
-  },
-  {
-    title: 'Book Covers',
-    category: 'Graphic Design',
-    description: 'Concept-driven cover developments with emphasis on mood, audience, and brand value.',
-    tools: ['Illustrator', 'Photoshop'],
-    image: '/images/design/book-cover-placeholder.svg',
-  },
-  {
-    title: 'Other Graphic Design',
-    category: 'Graphic Design',
-    description: 'Additional custom visual design work developed for digital campaigns and brand needs.',
-    tools: ['Illustrator', 'CorelDRAW'],
-    image: '/images/design/other-placeholder.svg',
+    description:
+      'A design preview covering branding, editorial layouts, promotional graphics, and social media visuals. The full PDF portfolio will be added when the final design collection is ready.',
+    tools: ['Branding', 'Editorial', 'Poster Design', 'Social Graphics'],
+    image: '/images/design/portfolio-preview.svg',
+    portfolioComingSoon: true,
   },
 ]
 
 export const videoProjects = [
   {
-    title: 'Brand Story Reel',
+    title: 'Video Editing',
     category: 'Video Editing',
-    description: 'A short-form brand story edit focused on narrative flow, pacing, and visual energy.',
-    tools: ['Premiere Pro', 'After Effects'],
-    image: '/images/video/reel-placeholder.svg',
-  },
-  {
-    title: 'Social Promo Edit',
-    category: 'Video Editing',
-    description: 'Fast-paced promotional sequence designed for digital reach and strong engagement.',
-    tools: ['Premiere Pro', 'Sound Design'],
-    image: '/images/video/promo-placeholder.svg',
-  },
-  {
-    title: 'Campaign Motion Piece',
-    category: 'Video Editing',
-    description: 'Campaign content designed to communicate brand messaging with rhythm and clarity.',
-    tools: ['After Effects', 'Premiere Pro'],
-    image: '/images/video/campaign-placeholder.svg',
+    description:
+      'Video editing is another part of my creative skill set, supporting promotional content, social media and visual storytelling with a clean, purposeful edit style.',
+    tools: ['Premiere Pro', 'Storytelling', 'Social Content'],
+    image: '/images/video/video-preview.svg',
+    comingSoon: true,
   },
 ]
 
@@ -274,7 +234,7 @@ export const selectedWork = [
     title: 'Car Marketplace',
     category: 'Frontend Development',
     image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=80',
-    liveLink: null,
+    liveLink: 'https://car-marketplace-db4l.vercel.app/',
     githubLink: 'https://github.com/Charles-spe/car-marketplace-.git',
   },
 ]

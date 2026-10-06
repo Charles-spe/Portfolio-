@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import {
-  aboutContent,
+  aboutSecondaryFallbackImage,
+  aboutSecondaryImage,
   allProjects,
   contactInfo,
   cvFile,
+  designPortfolio,
   designProjects,
   frontendProjects,
   navItems,
@@ -24,9 +27,7 @@ import {
 const getNavHref = (item) => {
   if (item === 'Home') return '/'
   if (item === 'About') return '/about'
-  if (item === 'Skills') return '/skills'
   if (item === 'Projects') return '/projects'
-  if (item === 'Services') return '/services'
   return '/contact'
 }
 
@@ -35,9 +36,7 @@ const isCurrentNavItem = (item) => {
 
   if (item === 'Home') return currentPath === '/'
   if (item === 'About') return currentPath === '/about'
-  if (item === 'Skills') return currentPath === '/skills'
   if (item === 'Projects') return currentPath === '/projects'
-  if (item === 'Services') return currentPath === '/services'
   return currentPath === '/contact'
 }
 
@@ -58,6 +57,42 @@ function SectionHeading({ eyebrow, title, description }) {
       <h2 className="font-display text-3xl font-bold tracking-tight text-stone-100 md:text-5xl">{title}</h2>
       {description ? <p className="mt-4 text-base text-stone-300 md:text-lg">{description}</p> : null}
     </div>
+  )
+}
+
+function SiteFooter() {
+  return (
+    <footer className="border-t border-white/10 bg-stone-950">
+      <div className="mx-auto max-w-7xl px-6 py-8 md:px-10">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <p className="font-display text-xl font-semibold text-white">Charles T. Nzelu</p>
+            <p className="mt-2 text-sm text-stone-400">Graphic Designer • Frontend Developer • Video Editor</p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-5 text-sm text-stone-400">
+            <a href="/" className="transition hover:text-white">Home</a>
+            <a href="/about" className="transition hover:text-white">About</a>
+            <a href="/projects" className="transition hover:text-white">Projects</a>
+            <a href="/contact" className="transition hover:text-white">Contact</a>
+          </div>
+
+          <div className="space-y-2 text-sm text-stone-400">
+            <p>
+              <a href={`mailto:${contactInfo.email}`} className="transition hover:text-white">{contactInfo.email}</a>
+            </p>
+            <p>
+              <a href={`tel:${contactInfo.phone}`} className="transition hover:text-white">+234 8149368077</a>
+            </p>
+            <p>
+              <a href={contactInfo.discordUrl} target="_blank" rel="noreferrer" className="transition hover:text-white">Discord</a>
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-8 border-t border-white/10 pt-5 text-sm text-stone-500">© 2026 Charles T. Nzelu. All rights reserved.</div>
+      </div>
+    </footer>
   )
 }
 
@@ -91,15 +126,15 @@ function HomePage() {
           <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <div>
               <p className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-stone-200">
-                Graphic Designer • Frontend Developer • Video Editor
+                Graphic Designer • Frontend Developer
               </p>
 
               <h1 className="max-w-3xl font-display text-5xl font-bold leading-[0.95] tracking-[-0.06em] text-white md:text-7xl">
-                I design clean experiences, build responsive interfaces, and craft visual stories.
+                I design clear brands and build polished digital experiences that feel premium and functional.
               </h1>
 
               <p className="mt-6 max-w-xl text-lg leading-8 text-stone-300 md:text-xl">
-                I&apos;m Charles T. Nzelu — a multidisciplinary creative blending graphic design, frontend development, and video editing to shape ideas into polished digital experiences.
+                I&apos;m Charles T. Nzelu — a multidisciplinary creative focused primarily on graphic design and frontend development, with video editing as a supporting creative skill for visual storytelling and digital content.
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -115,7 +150,7 @@ function HomePage() {
               </div>
 
               <div className="mt-10 flex flex-wrap gap-3 text-sm text-stone-300">
-                {['Design', 'Frontend', 'React', 'Tailwind CSS', 'Video Editing', 'Branding'].map((item) => (
+                {['Branding', 'Frontend', 'React', 'Tailwind CSS', 'UI Design', 'Creative Direction'].map((item) => (
                   <span key={item} className="rounded-full border border-white/10 bg-white/5 px-3 py-2">{item}</span>
                 ))}
               </div>
@@ -145,6 +180,9 @@ function HomePage() {
         <section id="projects" className="border-y border-white/10 bg-white/[0.02]">
           <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
             <SectionHeading eyebrow="Featured Work" title="Selected projects shaped for clarity and impact." description="A focused look at the web work that brings together thoughtful design, intuitive interfaces, and practical user experience." />
+            <p className="mb-8 max-w-2xl text-sm leading-7 text-stone-300 md:text-base">
+              Here are a few self-initiated projects where I took an idea from concept and design through to a working frontend experience.
+            </p>
 
             <div className="grid gap-8 lg:grid-cols-2">
               {featuredProjects.map((project) => (
@@ -158,8 +196,18 @@ function HomePage() {
                       <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-300">{project.category}</span>
                     </div>
 
+                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200">{project.ownershipLabel ?? 'Self-Initiated Project'}</p>
                     <h3 className="font-display text-3xl font-semibold text-white">{project.title}</h3>
-                    <p className="mt-3 text-base leading-7 text-stone-300">{project.description}</p>
+                    <p className="mt-3 text-base leading-7 text-stone-300">{project.homeDescription ?? project.description}</p>
+
+                    <div className="mt-5">
+                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">My Role</p>
+                      <div className="flex flex-wrap gap-2">
+                        {(project.role ?? []).map((item) => (
+                          <span key={item} className="rounded-full border border-white/10 bg-stone-800/70 px-2.5 py-1 text-xs text-stone-200">{item}</span>
+                        ))}
+                      </div>
+                    </div>
 
                     <div className="mt-5 flex flex-wrap gap-2">
                       {project.tools.map((tool) => (
@@ -170,12 +218,12 @@ function HomePage() {
                     <div className="mt-6 flex flex-wrap gap-3">
                       {project.liveLink ? (
                         <a href={project.liveLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">
-                          View Live Site
+                          Live Demo
                         </a>
                       ) : null}
                       {project.githubLink ? (
                         <a href={project.githubLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-4 py-2 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">
-                          View GitHub
+                          GitHub
                         </a>
                       ) : null}
                     </div>
@@ -187,16 +235,55 @@ function HomePage() {
         </section>
 
         <section id="services" className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <SectionHeading eyebrow="What I Do" title="Creative support across design, code, and content." description="I work at the intersection of visual storytelling and digital execution to help brands and ideas feel clear, polished, and engaging." />
+          <SectionHeading eyebrow="Core Focus" title="Creative work shaped around design, interface thinking, and digital clarity." description="Graphic design and frontend development are the primary strengths of the portfolio, while video editing remains a supporting creative skill." />
 
           <div className="grid gap-6 md:grid-cols-3">
             {services.map((service) => (
-              <div key={service.title} className="rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6 transition duration-300 hover:border-violet-500/30">
+              <div key={service.title} className={`rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6 transition duration-300 hover:border-violet-500/30 ${service.title === 'Graphic Design' || service.title === 'Frontend Development' ? 'ring-1 ring-violet-500/20' : 'opacity-95'}`}>
                 <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15 text-lg text-violet-200">✦</div>
                 <h3 className="font-display text-2xl font-semibold text-white">{service.title}</h3>
                 <p className="mt-4 text-base leading-7 text-stone-300">{service.description}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section id="graphic-design-preview" className="border-y border-white/10 bg-white/[0.02]">
+          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
+            <div className="grid items-center gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+              <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-stone-900/80 shadow-[0_18px_50px_rgba(0,0,0,0.12)]">
+                <img src="/images/design/portfolio-preview.svg" alt="Graphic Design Portfolio Preview" className="h-full w-full object-cover" />
+              </div>
+              <div>
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Graphic Design</p>
+                <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Graphic Design Portfolio — Coming Soon</h2>
+                <p className="mt-5 max-w-xl text-base leading-8 text-stone-300 md:text-lg">
+                  The full design portfolio PDF is still being prepared, so this section remains polished and ready for the completed collection when it is available.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <span className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-stone-300 opacity-90">
+                    Graphic Design Portfolio — Coming Soon
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="video-editing-preview" className="mx-auto max-w-7xl px-6 py-16 md:px-10">
+          <div className="rounded-[2rem] border border-white/10 bg-stone-900/70 p-6 md:p-8">
+            <div className="grid items-center gap-6 md:grid-cols-[0.7fr_1.3fr]">
+              <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-stone-950">
+                <img src="/images/video/video-preview.svg" alt="Video Editing preview" className="h-40 w-full object-cover md:h-48" />
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Video Editing</p>
+                <h3 className="font-display text-3xl font-semibold text-white">Video Editing</h3>
+                <p className="mt-3 max-w-2xl text-base leading-7 text-stone-300">
+                  An additional creative skill I enjoy exploring as a hobby.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -219,10 +306,9 @@ function HomePage() {
               <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">A multidisciplinary creative with a strong eye for detail.</h2>
             </div>
             <div className="space-y-5 text-base leading-8 text-stone-300 md:text-lg">
-              <p>I&apos;m Charles T. Nzelu, a creative professional bringing together design thinking, frontend development, and video production. I enjoy turning ideas into visual systems that feel thoughtful, useful, and memorable.</p>
-              <p>My work balances aesthetics with practical execution, helping businesses and projects communicate more clearly across screens, branding, and digital content.</p>
+              <p>I enjoy taking ideas from concept to reality — designing the visual experience, building the interface, and refining the details until everything comes together.</p>
               <div className="pt-2">
-                <a href="/about" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">More About Me</a>
+                <a href="/about" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">Learn More About Me</a>
               </div>
             </div>
           </div>
@@ -246,6 +332,7 @@ function HomePage() {
                 <div className="mt-5 space-y-4 text-base text-stone-200">
                   <p><span className="text-stone-400">Email:</span>{' '}<a href="mailto:nzelucharles98@gmail.com" className="text-violet-200 hover:text-violet-100">nzelucharles98@gmail.com</a></p>
                   <p><span className="text-stone-400">Phone:</span>{' '}<a href="tel:+2348149368077" className="text-violet-200 hover:text-violet-100">+234 8149368077</a></p>
+                  <p><span className="text-stone-400">Discord:</span>{' '}<a href={contactInfo.discordUrl} target="_blank" rel="noreferrer" aria-label="Open Charles T. Nzelu on Discord" className="text-violet-200 hover:text-violet-100">Discord</a></p>
                   <p><span className="text-stone-400">GitHub:</span>{' '}<a href="https://github.com/Charles-spe" target="_blank" rel="noreferrer" className="text-violet-200 hover:text-violet-100">github.com/Charles-spe</a></p>
                 </div>
               </div>
@@ -254,198 +341,29 @@ function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10 bg-stone-950">
-        <div className="mx-auto max-w-7xl px-6 py-8 md:px-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="font-display text-xl font-semibold text-white">Charles T. Nzelu</p>
-              <p className="mt-2 text-sm text-stone-400">Graphic Designer • Frontend Developer • Video Editor</p>
-            </div>
-            <div className="flex flex-wrap items-center gap-5 text-sm text-stone-400">
-              {navItems.map((item) => {
-                const href = getNavHref(item)
-                const activeClass = isCurrentNavItem(item) ? 'text-white' : 'text-stone-300'
-                return <a key={item} href={href} className={`transition hover:text-white ${activeClass}`}>{item}</a>
-              })}
-            </div>
-            <div className="space-y-2 text-sm text-stone-400">
-              <p><a href="mailto:nzelucharles98@gmail.com" className="hover:text-white">nzelucharles98@gmail.com</a></p>
-              <p><a href="tel:+2348149368077" className="hover:text-white">+234 8149368077</a></p>
-              <p><a href="https://github.com/Charles-spe" target="_blank" rel="noreferrer" className="hover:text-white">GitHub</a></p>
-            </div>
-          </div>
-          <div className="mt-8 border-t border-white/10 pt-5 text-sm text-stone-500">© 2026 Charles T. Nzelu. All rights reserved.</div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
 
 function AboutPage() {
-  return (
-    <div className="min-h-screen bg-stone-950 text-stone-100">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-stone-950/80 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 md:px-10">
-          <a href="/" className="font-display text-xl font-bold tracking-tight text-white">Charles T. Nzelu</a>
-          <div className="flex flex-wrap items-center justify-end gap-3 text-sm md:gap-8">
-            {navItems.map((item) => {
-              const href = getNavHref(item)
-              const activeClass = isCurrentNavItem(item) ? 'text-white' : 'text-stone-300'
-              return <a key={item} href={href} className={`transition hover:text-white ${activeClass}`}>{item}</a>
-            })}
-          </div>
-          <a href="/contact" className="hidden rounded-full border border-stone-700 bg-white px-4 py-2 text-sm font-medium text-stone-900 transition hover:-translate-y-0.5 hover:bg-stone-200 md:inline-flex">Let&apos;s Talk</a>
-        </nav>
-      </header>
-
-      <main>
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-            <div>
-              <p className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-stone-200">Graphic Designer • Frontend Developer • Video Editor</p>
-              <h1 className="font-display text-4xl font-bold leading-tight tracking-[-0.05em] text-white md:text-6xl">Charles T. Nzelu</h1>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-stone-300 md:text-xl">{aboutContent.intro}</p>
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <a href="/projects" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">View My Work</a>
-                <a href="/contact" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">Contact Me</a>
-              </div>
-            </div>
-
-            <div className="relative mx-auto w-full max-w-md">
-              <div className="absolute left-4 top-4 h-36 w-36 rounded-full bg-violet-500/20 blur-3xl" />
-              <div className="absolute -bottom-6 right-4 h-36 w-36 rounded-full bg-amber-400/15 blur-3xl" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-800 to-stone-900 p-4">
-                <img src={profileImage} alt="Portrait of Charles T. Nzelu" className="h-[500px] w-full rounded-[1.5rem] object-cover object-center" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="border-y border-white/10 bg-white/[0.02]">
-          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-            <SectionHeading eyebrow="My Story" title="Creative direction shaped by visual thinking and practical build skills." />
-            <div className="grid gap-6 lg:grid-cols-2">
-              {aboutContent.story.map((paragraph) => (
-                <div key={paragraph} className="rounded-[1.5rem] border border-white/10 bg-stone-900/70 p-6 text-base leading-8 text-stone-300 md:text-lg">{paragraph}</div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <SectionHeading eyebrow="What I Do" title="Design, development, and motion work done with intention." />
-          <div className="grid gap-6 md:grid-cols-3">
-            <article className="rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6">
-              <h3 className="font-display text-2xl font-semibold text-white">Graphic Design</h3>
-              <p className="mt-4 text-base leading-7 text-stone-300">I create visual designs including branding, posters, social media graphics, layouts, and other digital design work with a focus on clarity and visual identity.</p>
-            </article>
-            <article className="rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6">
-              <h3 className="font-display text-2xl font-semibold text-white">Frontend Development</h3>
-              <p className="mt-4 text-base leading-7 text-stone-300">I build responsive websites and interfaces using technologies such as React, HTML, CSS, and Tailwind CSS to create polished, functional digital experiences.</p>
-            </article>
-            <article className="rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6">
-              <h3 className="font-display text-2xl font-semibold text-white">Video Editing</h3>
-              <p className="mt-4 text-base leading-7 text-stone-300">I create and edit video content for digital platforms and promotional work, shaping purpose, rhythm, and visual storytelling through editing.</p>
-            </article>
-          </div>
-        </section>
-
-        <section className="border-y border-white/10 bg-white/[0.02]">
-          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-            <SectionHeading eyebrow="Skills" title="Tools I use to shape digital work." />
-            <div className="grid gap-6 md:grid-cols-3">
-              {skillGroups.map((group) => (
-                <div key={group.title} className="rounded-[1.7rem] border border-white/10 bg-stone-900/70 p-6">
-                  <h3 className="font-display text-2xl font-semibold text-white">{group.title}</h3>
-                  <ul className="mt-6 space-y-3 text-stone-300">
-                    {group.items.map((item) => (
-                      <li key={item} className="flex items-center gap-3 border-b border-white/10 pb-3 last:border-none last:pb-0"><span className="inline-flex h-2.5 w-2.5 rounded-full bg-violet-400" />{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <SectionHeading eyebrow="Selected Work" title="Recent projects that reflect my direction." />
-          <div className="grid gap-8 md:grid-cols-2">
-            {selectedWork.map((project) => (
-              <article key={project.title} className="overflow-hidden rounded-[2rem] border border-white/10 bg-stone-900/80">
-                <img src={project.image} alt={project.title} className="h-64 w-full object-cover" />
-                <div className="p-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-400">{project.category}</p>
-                  <h3 className="mt-3 font-display text-3xl font-semibold text-white">{project.title}</h3>
-                  <div className="mt-5 flex flex-wrap gap-3">
-                    {project.liveLink ? <a href={project.liveLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">View Project</a> : null}
-                    {project.githubLink ? <a href={project.githubLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">GitHub</a> : null}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="border-y border-white/10 bg-white/[0.02]">
-          <div className="mx-auto max-w-5xl px-6 py-20 text-center md:px-10">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">CV</p>
-            <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Want to know more about my experience and skills?</h2>
-            <div className="mt-8">
-              <a href={cvFile} download className="inline-flex items-center justify-center rounded-full border border-violet-500/40 bg-violet-500/10 px-6 py-3 text-sm font-semibold text-violet-100 transition hover:border-violet-400 hover:bg-violet-500/20">Download CV</a>
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-violet-500/10 via-stone-900 to-amber-500/10 p-8 md:p-12">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Contact</p>
-                <h2 className="mt-3 font-display text-4xl font-bold text-white md:text-5xl">Let&apos;s build something polished and useful.</h2>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <a href="/projects" className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">View My Work</a>
-                <a href="mailto:nzelucharles98@gmail.com" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">Contact Me</a>
-              </div>
-            </div>
-            <div className="mt-8 grid gap-4 text-base text-stone-200 md:grid-cols-2">
-              <p><span className="text-stone-400">Email:</span>{' '}<a href="mailto:nzelucharles98@gmail.com" className="text-violet-200 hover:text-violet-100">nzelucharles98@gmail.com</a></p>
-              <p><span className="text-stone-400">Phone:</span>{' '}<a href="tel:+2348149368077" className="text-violet-200 hover:text-violet-100">+234 8149368077</a></p>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-white/10 bg-stone-950">
-        <div className="mx-auto max-w-7xl px-6 py-8 md:px-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="font-display text-xl font-semibold text-white">Charles T. Nzelu</p>
-              <p className="mt-2 text-sm text-stone-400">Graphic Designer • Frontend Developer • Video Editor</p>
-            </div>
-            <div className="flex flex-wrap items-center gap-5 text-sm text-stone-400">
-              <a href="/" className="hover:text-white">Home</a>
-              <a href="/about" className="hover:text-white">About</a>
-              <a href="/projects" className="hover:text-white">Projects</a>
-              <a href="/contact" className="hover:text-white">Contact</a>
-            </div>
-          </div>
-          <div className="mt-8 border-t border-white/10 pt-5 text-sm text-stone-500">© 2026 Charles T. Nzelu. All rights reserved.</div>
-        </div>
-      </footer>
-    </div>
-  )
-}
-
-function SkillsPage() {
-  const tools = ['Photoshop', 'Illustrator', 'InDesign', 'CorelDRAW', 'React', 'Tailwind CSS']
-  const practicalWork = [
-    ...selectedWork,
-    ...designProjects.slice(0, 2).map((project) => ({ title: project.title, category: project.category, image: project.image, liveLink: null, githubLink: null })),
-    ...videoProjects.slice(0, 2).map((project) => ({ title: project.title, category: project.category, image: project.image, liveLink: null, githubLink: null })),
+  const personalInterests = [
+    {
+      title: 'Creativity',
+      description: 'I enjoy turning simple ideas into visuals and digital experiences that feel thoughtful and purposeful.',
+    },
+    {
+      title: 'Games & Strategy',
+      description: 'I enjoy mind and board games because I like strategy, problem-solving, and figuring out different ways to approach a challenge.',
+    },
+    {
+      title: 'Music',
+      description: 'Music is one of my favorite ways to relax, stay inspired, and set the mood while working or creating.',
+    },
   ]
 
+  const profileImageStyle = 'h-[520px] w-full rounded-[1.75rem] object-cover object-center md:h-[620px]'
+
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100">
       <header className="sticky top-0 z-50 border-b border-white/10 bg-stone-950/80 backdrop-blur-xl">
@@ -462,94 +380,159 @@ function SkillsPage() {
         </nav>
       </header>
 
-      <main>
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <div className="max-w-3xl">
-            <p className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-stone-200">Skills & Tools</p>
-            <h1 className="font-display text-4xl font-bold tracking-[-0.06em] text-white md:text-6xl">Skills & Tools</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-300 md:text-xl">Charles T. Nzelu brings together creative design, frontend development, and video editing to build polished digital experiences that are both functional and visually engaging.</p>
+      <main className="overflow-x-hidden">
+        <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="order-2 lg:order-1">
+              <p className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.24em] text-stone-200">
+                Creative professional
+              </p>
+
+              <h1 className="max-w-xl font-display text-4xl font-bold leading-[0.98] tracking-[-0.05em] text-white md:text-6xl">
+                Hey, I&apos;m Charles Tochukwu Nzelu.
+              </h1>
+
+              <div className="mt-6 space-y-5 max-w-xl text-base leading-8 text-stone-300 md:text-lg">
+                <p>
+                  Hey, I&apos;m Charles Tochukwu Nzelu, a frontend developer and graphic designer with a love for turning ideas into things people can actually see, use, and connect with. I also enjoy video editing as a hobby, which gives me another way to explore creativity and visual storytelling.
+                </p>
+                <p>
+                  I&apos;m naturally drawn to creative work. I enjoy taking a simple idea and finding ways to make it more interesting, meaningful, and visually appealing. For me, good design isn&apos;t just about making something look beautiful; it&apos;s about making people feel something, understand something, or experience something differently.
+                </p>
+                <p>
+                  I also enjoy creating self-initiated projects where I can take an idea from concept and design through to a working frontend experience.
+                </p>
+                <p>
+                  Outside of design and development, I&apos;m into mind and board games because I enjoy challenges, strategy, and figuring things out. Music is another big part of my downtime. Whether I&apos;m listening while working, relaxing, or simply enjoying a good song, it has always been one of the easiest ways for me to reset and get inspired.
+                </p>
+              </div>
+
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <a href="/projects" className={buttonPrimaryClass}>View My Work</a>
+                <a href="/contact" className={buttonSecondaryClass}>Contact Me</a>
+                <a href={cvFile} download className="inline-flex items-center justify-center rounded-full border border-violet-500/40 bg-violet-500/10 px-5 py-3 text-sm font-semibold text-violet-100 transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-400 hover:bg-violet-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 active:translate-y-0">
+                  Download CV
+                </a>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <div className="relative mx-auto max-w-[520px]">
+                <div className="absolute -left-6 top-8 h-40 w-40 rounded-full bg-violet-500/20 blur-3xl" />
+                <div className="absolute -right-6 bottom-8 h-40 w-40 rounded-full bg-amber-400/15 blur-3xl" />
+
+                <div className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-gradient-to-br from-stone-900 via-stone-900 to-stone-950 p-3 shadow-[0_30px_80px_rgba(0,0,0,0.28)]">
+                  <img
+                    src={profileImage}
+                    alt="Portrait of Charles Tochukwu Nzelu"
+                    className={profileImageStyle}
+                    onError={(event) => {
+                      event.currentTarget.onerror = null
+                      event.currentTarget.src = '/images/profile/profile-placeholder.svg'
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 pb-20 md:px-10">
-          <div className="grid gap-6 lg:grid-cols-3">
-            {skillCategories.map((category) => (
-              <article key={category.title} className="rounded-[2rem] border border-white/10 bg-stone-900/75 p-6">
-                <div className="mb-5 flex items-center justify-between gap-4">
-                  <h2 className="font-display text-2xl font-semibold text-white">{category.title}</h2>
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-violet-200">{category.title.split(' ')[0].slice(0, 2).toUpperCase()}</span>
+        <section className="border-y border-white/10 bg-white/[0.02]">
+          <div className="mx-auto max-w-7xl px-6 py-18 md:px-10 md:py-20">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+              <div className="order-2 lg:order-1">
+                <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-stone-900/80 p-3 shadow-[0_24px_70px_rgba(0,0,0,0.22)]">
+                  <img
+                    src={aboutSecondaryImage}
+                    alt="Personal lifestyle portrait of Charles Tochukwu Nzelu"
+                    className="h-[380px] w-full rounded-[1.5rem] object-cover object-center md:h-[460px]"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null
+                      event.currentTarget.src = aboutSecondaryFallbackImage
+                    }}
+                  />
                 </div>
-                <div className="space-y-4">
-                  {category.items.map((skill) => (
-                    <div key={skill.name} className="rounded-2xl border border-white/10 bg-stone-950/60 p-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <p className="font-medium text-white">{skill.name}</p>
-                        <span className="h-2.5 w-2.5 rounded-full bg-violet-400" />
-                      </div>
-                      <p className="mt-2 text-sm leading-6 text-stone-300">{skill.description}</p>
+              </div>
+
+              <div className="order-1 lg:order-2">
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Personal</p>
+                <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-5xl">The creative side beyond the screen.</h2>
+                <p className="mt-5 max-w-xl text-base leading-8 text-stone-300 md:text-lg">
+                  I like to keep a balance between focused creative work and the things that keep me inspired. My interests help shape how I think, how I build, and how I approach visual ideas.
+                </p>
+
+                <div className="mt-8 space-y-4">
+                  {personalInterests.map((interest) => (
+                    <div key={interest.title} className="rounded-[1.4rem] border border-white/10 bg-stone-900/70 p-5">
+                      <h3 className="font-display text-2xl font-semibold text-white">{interest.title}</h3>
+                      <p className="mt-2 text-sm leading-7 text-stone-300 md:text-base">{interest.description}</p>
                     </div>
                   ))}
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="border-y border-white/10 bg-white/[0.02]">
-          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-              <div>
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Design + Development</p>
-                <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">A creative process shaped by both visual thinking and technical execution.</h2>
               </div>
-              <div className="rounded-[2rem] border border-white/10 bg-stone-900/70 p-6 text-base leading-8 text-stone-300 md:text-lg">I approach each project from both sides: one eye on the visual quality, and one eye on how it will function in real use. That balance helps me move between graphic design, frontend development, and video editing without losing clarity or purpose.</div>
             </div>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <SectionHeading eyebrow="Tools I Use" title="The tools behind my workflow." description="A practical set of tools that support the way I design, build, and refine creative work." />
-          <div className="flex flex-wrap gap-3">
-            {tools.map((tool) => (
-              <span key={tool} className="rounded-full border border-white/10 bg-stone-900 px-4 py-2 text-sm text-stone-200">{tool}</span>
-            ))}
+          <SectionHeading
+            eyebrow="Creative focus"
+            title="What I build and what I enjoy creating."
+            description="Frontend development and graphic design are the strongest focus, while video editing remains a meaningful creative hobby and a way to explore motion and storytelling."
+          />
+
+          <div className="grid gap-6 md:grid-cols-3">
+            <article className="rounded-[2rem] border border-violet-500/20 bg-gradient-to-b from-stone-900 to-stone-950 p-6 ring-1 ring-violet-500/15">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-200">Primary</p>
+              <h3 className="mt-4 font-display text-2xl font-semibold text-white">Frontend Development</h3>
+              <p className="mt-4 text-base leading-7 text-stone-300">
+                I enjoy building responsive, modern interfaces that are clean, practical, and easy to use.
+              </p>
+            </article>
+
+            <article className="rounded-[2rem] border border-violet-500/20 bg-gradient-to-b from-stone-900 to-stone-950 p-6 ring-1 ring-violet-500/15">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-200">Primary</p>
+              <h3 className="mt-4 font-display text-2xl font-semibold text-white">Graphic Design</h3>
+              <p className="mt-4 text-base leading-7 text-stone-300">
+                I enjoy creating visual designs that communicate ideas clearly while still feeling creative and memorable.
+              </p>
+            </article>
+
+            <article className="rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6 opacity-95">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-300">Secondary</p>
+              <h3 className="mt-4 font-display text-2xl font-semibold text-white">Video Editing</h3>
+              <p className="mt-4 text-base leading-7 text-stone-300">
+                Video editing is something I enjoy exploring as a hobby, especially when I want to experiment with movement, timing, and visual storytelling.
+              </p>
+            </article>
           </div>
         </section>
 
         <section className="border-y border-white/10 bg-white/[0.02]">
-          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-            <SectionHeading eyebrow="Practical Work" title="These skills are applied in the work I share." />
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {practicalWork.map((project) => (
-                <article key={`${project.title}-${project.category}`} className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-stone-900/80">
-                  <img src={project.image} alt={project.title} className="h-52 w-full object-cover" />
-                  <div className="p-5">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">{project.category}</p>
-                    <h3 className="mt-3 font-display text-2xl font-semibold text-white">{project.title}</h3>
-                    {project.liveLink ? <div className="mt-5"><a href={project.liveLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">View Project</a></div> : null}
-                  </div>
-                </article>
-              ))}
+          <div className="mx-auto max-w-5xl px-6 py-20 md:px-10">
+            <div className="rounded-[2rem] border border-white/10 bg-stone-900/80 p-8 md:p-10">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">How I work</p>
+              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-white md:text-5xl">
+                I like learning by building.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-stone-300 md:text-lg">
+                I like learning by building. Whether I&apos;m designing a visual or developing an interface, I enjoy experimenting, solving problems, refining the details, and seeing an idea gradually become something real.
+              </p>
             </div>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-violet-500/10 via-stone-900 to-amber-500/10 p-8 md:p-12">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Contact</p>
-                <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Have a project in mind?</h2>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <a href="/projects" className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">View My Work</a>
-                <a href="mailto:nzelucharles98@gmail.com" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">Contact Me</a>
-              </div>
-            </div>
-            <div className="mt-8 grid gap-4 text-base text-stone-200 md:grid-cols-3">
-              <p><span className="text-stone-400">Email:</span>{' '}<a href="mailto:nzelucharles98@gmail.com" className="text-violet-200 hover:text-violet-100">nzelucharles98@gmail.com</a></p>
-              <p><span className="text-stone-400">Phone:</span>{' '}<a href="tel:+2348149368077" className="text-violet-200 hover:text-violet-100">+234 8149368077</a></p>
-              <p><span className="text-stone-400">Location:</span>{' '}<span className="text-stone-200">Lagos, Ojo Itakete, Nigeria</span></p>
+          <div className="rounded-[2.25rem] border border-violet-500/20 bg-gradient-to-r from-violet-500/10 via-stone-900 to-amber-500/10 p-8 text-center md:p-12">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-300">Let&apos;s create something meaningful.</p>
+            <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Let&apos;s create something meaningful.</h2>
+
+            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+              <a href="/projects" className={buttonPrimaryClass}>View My Work</a>
+              <a href="/contact" className={buttonSecondaryClass}>Contact Me</a>
+              <a href={cvFile} download className="inline-flex items-center justify-center rounded-full border border-violet-500/40 bg-violet-500/10 px-5 py-3 text-sm font-semibold text-violet-100 transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-400 hover:bg-violet-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 active:translate-y-0">
+                Download CV
+              </a>
             </div>
           </div>
         </section>
@@ -565,7 +548,6 @@ function SkillsPage() {
             <div className="flex flex-wrap items-center gap-5 text-sm text-stone-400">
               <a href="/" className="hover:text-white">Home</a>
               <a href="/about" className="hover:text-white">About</a>
-              <a href="/skills" className="hover:text-white">Skills</a>
               <a href="/projects" className="hover:text-white">Projects</a>
               <a href="/contact" className="hover:text-white">Contact</a>
             </div>
@@ -624,10 +606,12 @@ function ProjectsPage() {
 
       <main>
         <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <div className="max-w-3xl">
+          <div className="max-w-4xl">
             <p className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-stone-200">Selected Work</p>
             <h1 className="font-display text-4xl font-bold tracking-[-0.06em] text-white md:text-6xl">Selected Work</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-300 md:text-xl">These projects reflect Charles T. Nzelu&apos;s work across frontend development, graphic design, and video editing, showing how thoughtful design, practical execution, and visual storytelling come together.</p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-300 md:text-xl">
+              Here are some of the projects and creative work I&apos;ve built across frontend development and graphic design, with video editing as an additional creative skill.
+            </p>
           </div>
         </section>
 
@@ -654,10 +638,15 @@ function ProjectsPage() {
 
         {showSection('Frontend Development') ? (
           <section className="mx-auto max-w-7xl px-6 py-10 md:px-10">
-            <SectionHeading eyebrow="Frontend Development" title="Selected web experiences." />
+            <p className="mb-6 text-sm text-stone-400">These are self-initiated projects created from my own ideas. I handled the concept, interface design, user experience, and frontend development for each project.</p>
+            <SectionHeading
+              eyebrow="Frontend Development"
+              title="Frontend Development"
+              description="Responsive interfaces and interactive web experiences built with a focus on clean design, usability, and practical functionality."
+            />
             <div className="grid gap-8 lg:grid-cols-2">
               {frontendProjects.map((project) => (
-                <article key={project.title} className="group overflow-hidden rounded-[2rem] border border-white/10 bg-stone-900/80 transition duration-300 hover:-translate-y-1 hover:border-stone-600">
+                <article key={project.title} className="group overflow-hidden rounded-[2rem] border border-violet-500/20 bg-stone-900/80 shadow-[0_28px_80px_rgba(0,0,0,0.18)] transition duration-300 hover:-translate-y-1 hover:border-violet-400/40">
                   <div className="overflow-hidden">
                     <img src={project.image} alt={project.title} className="h-72 w-full object-cover transition duration-500 group-hover:scale-105" />
                   </div>
@@ -665,16 +654,25 @@ function ProjectsPage() {
                     <div className="mb-4 flex items-center justify-between gap-4">
                       <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-300">{project.category}</span>
                     </div>
+                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200">{project.ownershipLabel ?? 'Self-Initiated Project'}</p>
                     <h2 className="font-display text-3xl font-semibold text-white">{project.title}</h2>
                     <p className="mt-3 text-base leading-7 text-stone-300">{project.description}</p>
+                    <div className="mt-5">
+                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">My Role</p>
+                      <div className="flex flex-wrap gap-2">
+                        {(project.role ?? []).map((item) => (
+                          <span key={item} className="rounded-full border border-white/10 bg-stone-800/70 px-2.5 py-1 text-xs text-stone-200">{item}</span>
+                        ))}
+                      </div>
+                    </div>
                     <div className="mt-5 flex flex-wrap gap-2">
                       {project.tools.map((tool) => (
                         <span key={tool} className="rounded-full bg-stone-800 px-2.5 py-1 text-xs text-stone-200">{tool}</span>
                       ))}
                     </div>
                     <div className="mt-6 flex flex-wrap gap-3">
-                      {project.liveLink ? <a href={project.liveLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">Live Demo</a> : null}
-                      {project.githubLink ? <a href={project.githubLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-4 py-2 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">GitHub</a> : null}
+                      {project.liveLink ? <a href={project.liveLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-stone-900 transition hover:bg-stone-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">Live Demo</a> : null}
+                      {project.githubLink ? <a href={project.githubLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-4 py-2 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">GitHub</a> : null}
                     </div>
                   </div>
                 </article>
@@ -685,40 +683,96 @@ function ProjectsPage() {
 
         {showSection('Graphic Design') ? (
           <section className="mx-auto max-w-7xl px-6 py-10 md:px-10">
-            <SectionHeading eyebrow="Graphic Design" title="Visual identity and layouts." description="A curated selection of design work focused on branding, editorial layouts, and clear visual communication." />
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-              {designProjects.map((project) => (
-                <article key={project.title} className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-stone-900/80 transition duration-300 hover:-translate-y-1 hover:border-stone-600">
-                  <button type="button" onClick={() => setSelectedProject(project)} className="block w-full text-left" aria-label={`Open preview for ${project.title}`}>
-                    <div className="overflow-hidden"><img src={project.image} alt={project.title} className="h-64 w-full object-cover transition duration-500 group-hover:scale-105" /></div>
-                    <div className="p-5">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">{project.category}</p>
-                      <h3 className="mt-3 font-display text-2xl font-semibold text-white">{project.title}</h3>
-                      <p className="mt-2 text-sm leading-6 text-stone-300">{project.description}</p>
-                    </div>
-                  </button>
-                </article>
-              ))}
+            <SectionHeading
+              eyebrow="Graphic Design"
+              title="Graphic Design"
+              description="Visual work focused on identity, layout, promotional graphics, and creative communication."
+            />
+            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-stone-900/80">
+              <div className="grid items-center gap-0 md:grid-cols-[0.9fr_1.1fr]">
+                <div className="overflow-hidden">
+                  <img src="/images/design/portfolio-preview.svg" alt="Graphic Design portfolio preview" className="h-72 w-full object-cover md:h-full" />
+                </div>
+                <div className="p-6 md:p-8">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">Portfolio preview</p>
+                  <h3 className="mt-3 font-display text-3xl font-semibold text-white">Graphic Design Portfolio</h3>
+                  <p className="mt-4 text-base leading-7 text-stone-300">
+                    The completed design portfolio is still being prepared, so this section is kept polished and ready for the full PDF when it is available.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {designPortfolio.available ? (
+                      <a href={designPortfolio.file} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">
+                        View Design Portfolio
+                      </a>
+                    ) : (
+                      <span className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-stone-300 opacity-90">
+                        Graphic Design Portfolio — Coming Soon
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         ) : null}
 
         {showSection('Video Editing') ? (
           <section className="mx-auto max-w-7xl px-6 py-10 md:px-10">
-            <SectionHeading eyebrow="Video Editing" title="Motion and story-led edits." description="Short-form visual storytelling and campaign-driven edits created to communicate clearly and keep viewers engaged." />
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {videoProjects.map((project) => (
-                <article key={project.title} className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-stone-900/80 transition duration-300 hover:-translate-y-1 hover:border-stone-600">
-                  <button type="button" onClick={() => setSelectedProject(project)} className="block w-full text-left" aria-label={`Open preview for ${project.title}`}>
-                    <div className="overflow-hidden"><img src={project.image} alt={project.title} className="h-60 w-full object-cover transition duration-500 group-hover:scale-105" /></div>
-                    <div className="p-5">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">{project.category}</p>
-                      <h3 className="mt-3 font-display text-2xl font-semibold text-white">{project.title}</h3>
-                      <p className="mt-2 text-sm leading-6 text-stone-300">{project.description}</p>
-                    </div>
-                  </button>
-                </article>
-              ))}
+            <SectionHeading
+              eyebrow="Skills & Tools"
+              title="Skills & Tools"
+              description="The practical tools and creative systems behind the work, kept concise and easy to scan."
+            />
+            <div className="grid gap-5 lg:grid-cols-3">
+              <article className="rounded-[1.6rem] border border-white/10 bg-stone-900/75 p-5">
+                <h3 className="font-display text-2xl font-semibold text-white">Frontend Development</h3>
+                <ul className="mt-5 space-y-3 text-sm text-stone-300">
+                  {['HTML', 'CSS', 'Tailwind CSS', 'React', 'Node.js'].map((item) => (
+                    <li key={item} className="rounded-xl border border-white/10 bg-stone-950/60 px-3 py-2">{item}</li>
+                  ))}
+                </ul>
+              </article>
+
+              <article className="rounded-[1.6rem] border border-white/10 bg-stone-900/75 p-5">
+                <h3 className="font-display text-2xl font-semibold text-white">Graphic Design</h3>
+                <ul className="mt-5 space-y-3 text-sm text-stone-300">
+                  {['Photoshop', 'Illustrator', 'InDesign', 'CorelDRAW'].map((item) => (
+                    <li key={item} className="rounded-xl border border-white/10 bg-stone-950/60 px-3 py-2">{item}</li>
+                  ))}
+                </ul>
+              </article>
+
+              <article className="rounded-[1.6rem] border border-white/10 bg-stone-900/75 p-5 opacity-90">
+                <h3 className="font-display text-2xl font-semibold text-white">Video Editing</h3>
+                <ul className="mt-5 space-y-3 text-sm text-stone-300">
+                  {['Video Editing'].map((item) => (
+                    <li key={item} className="rounded-xl border border-white/10 bg-stone-950/60 px-3 py-2">{item}</li>
+                  ))}
+                </ul>
+              </article>
+            </div>
+          </section>
+        ) : null}
+
+        {showSection('Frontend Development') || showSection('Graphic Design') || showSection('Video Editing') ? (
+          <section className="mx-auto max-w-7xl px-6 py-10 md:px-10">
+            <SectionHeading eyebrow="What I Do" title="What I Do" description="Focused, practical creative work shaped around clear thinking and strong visual execution." />
+            <div className="grid gap-5 lg:grid-cols-3">
+              <article className="rounded-[2rem] border border-violet-500/20 bg-gradient-to-b from-stone-900 to-stone-950 p-6 ring-1 ring-violet-500/15">
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15 text-lg text-violet-200">✦</div>
+                <h3 className="font-display text-2xl font-semibold text-white">Graphic Design</h3>
+                <p className="mt-4 text-base leading-7 text-stone-300">Branding, posters, editorial layouts, social graphics, and visual design.</p>
+              </article>
+              <article className="rounded-[2rem] border border-violet-500/20 bg-gradient-to-b from-stone-900 to-stone-950 p-6 ring-1 ring-violet-500/15">
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15 text-lg text-violet-200">✦</div>
+                <h3 className="font-display text-2xl font-semibold text-white">Frontend Development</h3>
+                <p className="mt-4 text-base leading-7 text-stone-300">Responsive, modern interfaces and interactive web experiences.</p>
+              </article>
+              <article className="rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6 opacity-80 md:translate-y-1">
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15 text-lg text-violet-200">✦</div>
+                <h3 className="font-display text-2xl font-semibold text-white">Video Editing</h3>
+                <p className="mt-4 text-base leading-7 text-stone-300">Video editing for promotional content, social media, and visual storytelling.</p>
+              </article>
             </div>
           </section>
         ) : null}
@@ -730,8 +784,17 @@ function ProjectsPage() {
               <img src={selectedProject.image} alt={selectedProject.title} className="h-72 w-full object-cover md:h-96" />
               <div className="p-6 md:p-8">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">{selectedProject.category}</p>
+                <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200">{selectedProject.ownershipLabel ?? 'Self-Initiated Project'}</p>
                 <h3 className="mt-3 font-display text-3xl font-semibold text-white md:text-4xl">{selectedProject.title}</h3>
                 <p className="mt-4 text-base leading-7 text-stone-300">{selectedProject.description}</p>
+                <div className="mt-5">
+                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">My Role</p>
+                  <div className="flex flex-wrap gap-2">
+                    {(selectedProject.role ?? []).map((item) => (
+                      <span key={item} className="rounded-full border border-white/10 bg-stone-800/70 px-2.5 py-1 text-xs text-stone-200">{item}</span>
+                    ))}
+                  </div>
+                </div>
                 {selectedProject.tools ? <div className="mt-5 flex flex-wrap gap-2">{selectedProject.tools.map((tool) => <span key={tool} className="rounded-full bg-stone-800 px-2.5 py-1 text-xs text-stone-200">{tool}</span>)}</div> : null}
               </div>
             </div>
@@ -740,200 +803,16 @@ function ProjectsPage() {
 
         <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
           <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-violet-500/10 via-stone-900 to-amber-500/10 p-8 md:p-12">
-            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-              <div>
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Contact</p>
-                <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Let&apos;s Build Something.</h2>
-                <p className="mt-4 max-w-xl text-base leading-7 text-stone-300 md:text-lg">I&apos;m available for thoughtful creative work across branding, frontend development, and video storytelling.</p>
-              </div>
-              <div className="flex flex-wrap gap-3 lg:justify-end">
-                <a href="/contact" className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">Contact Me</a>
-                <a href={cvFile} download className="inline-flex items-center justify-center rounded-full border border-violet-500/40 bg-violet-500/10 px-5 py-3 text-sm font-semibold text-violet-100 transition hover:border-violet-400 hover:bg-violet-500/20">Download CV</a>
-              </div>
-            </div>
-            <div className="mt-8 text-base text-stone-200"><p><span className="text-stone-400">Location:</span>{' '}<span>Lagos, Ojo Itakete, Nigeria</span></p></div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-white/10 bg-stone-950">
-        <div className="mx-auto max-w-7xl px-6 py-8 md:px-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="font-display text-xl font-semibold text-white">Charles T. Nzelu</p>
-              <p className="mt-2 text-sm text-stone-400">Graphic Designer • Frontend Developer • Video Editor</p>
-            </div>
-            <div className="flex flex-wrap items-center gap-5 text-sm text-stone-400">
-              <a href="/" className="hover:text-white">Home</a>
-              <a href="/about" className="hover:text-white">About</a>
-              <a href="/skills" className="hover:text-white">Skills</a>
-              <a href="/projects" className="hover:text-white">Projects</a>
-              <a href="/contact" className="hover:text-white">Contact</a>
-            </div>
-          </div>
-          <div className="mt-8 border-t border-white/10 pt-5 text-sm text-stone-500">© 2026 Charles T. Nzelu. All rights reserved.</div>
-        </div>
-      </footer>
-    </div>
-  )
-}
-
-function ServicesPage() {
-  return (
-    <div className="min-h-screen bg-stone-950 text-stone-100">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-stone-950/80 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 md:px-10">
-          <a href="/" className="font-display text-xl font-bold tracking-tight text-white">Charles T. Nzelu</a>
-          <div className="flex flex-wrap items-center justify-end gap-3 text-sm md:gap-8">
-            {navItems.map((item) => {
-              const href = getNavHref(item)
-              const activeClass = isCurrentNavItem(item) ? 'text-white' : 'text-stone-300'
-              return <a key={item} href={href} className={`transition hover:text-white ${activeClass}`}>{item}</a>
-            })}
-          </div>
-          <a href="/contact" className="hidden rounded-full border border-stone-700 bg-white px-4 py-2 text-sm font-medium text-stone-900 transition hover:-translate-y-0.5 hover:bg-stone-200 md:inline-flex">Let&apos;s Talk</a>
-        </nav>
-      </header>
-
-      <main>
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <div className="max-w-3xl">
-            <p className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-stone-200">Services</p>
-            <h1 className="font-display text-4xl font-bold tracking-[-0.06em] text-white md:text-6xl">What I Can Do</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-300 md:text-xl">
-              I work across graphic design, frontend development, and video editing to turn ideas into polished digital content and experiences that feel clear, useful, and visually intentional.
-            </p>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 pb-20 md:px-10">
-          <div className="grid gap-6 lg:grid-cols-3">
-            {serviceCards.map((service) => (
-              <article key={service.id} className="group rounded-[2rem] border border-white/10 bg-gradient-to-b from-stone-900 to-stone-950 p-6 transition duration-300 hover:-translate-y-1 hover:border-violet-500/30">
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15 text-lg text-violet-200">✦</div>
-                <h2 className="font-display text-3xl font-semibold text-white">{service.title}</h2>
-                <p className="mt-4 text-base leading-7 text-stone-300">{service.summary}</p>
-                <ul className="mt-6 space-y-3 text-sm leading-6 text-stone-300">
-                  {service.items.map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span className="mt-2 h-2 w-2 rounded-full bg-violet-400" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8">
-                  <a href={service.href} className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">{service.cta}</a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="border-y border-white/10 bg-white/[0.02]">
-          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-            <SectionHeading eyebrow="How I Work" title="A simple process built around clarity and quality." />
-            <div className="grid gap-6 md:grid-cols-3">
-              {serviceProcess.map((step) => (
-                <div key={step.step} className="rounded-[1.75rem] border border-white/10 bg-stone-900/75 p-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-200">{step.step}</p>
-                  <h3 className="mt-4 font-display text-2xl font-semibold text-white">{step.title}</h3>
-                  <p className="mt-4 text-base leading-7 text-stone-300">{step.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Why Work With Me</p>
-              <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">A balance of design thinking and practical development.</h2>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {serviceReasons.map((reason) => (
-                <div key={reason} className="rounded-[1.4rem] border border-white/10 bg-stone-900/70 p-4 text-sm leading-6 text-stone-200">
-                  <span className="mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-violet-500/15 text-violet-200">✓</span>
-                  <p>{reason}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-y border-white/10 bg-white/[0.02]">
-          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-            <SectionHeading eyebrow="Tools & Skills" title="The tools that support the work." description="A compact view of the technologies and creative tools I use across frontend, design, and video work." />
-            <div className="grid gap-6 md:grid-cols-3">
-              {serviceTools.map((group) => (
-                <div key={group.title} className="rounded-[1.75rem] border border-white/10 bg-stone-900/70 p-6">
-                  <h3 className="font-display text-2xl font-semibold text-white">{group.title}</h3>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {group.items.map((item) => (
-                      <span key={item} className="rounded-full border border-white/10 bg-stone-950 px-3 py-2 text-sm text-stone-200">{item}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-          <SectionHeading eyebrow="Portfolio Connection" title="A few examples of the work behind the services." />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {selectedWork.map((project) => (
-              <article key={project.title} className="overflow-hidden rounded-[1.7rem] border border-white/10 bg-stone-900/80">
-                <img src={project.image} alt={project.title} className="h-44 w-full object-cover" />
-                <div className="p-5">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">{project.category}</p>
-                  <h3 className="mt-3 font-display text-2xl font-semibold text-white">{project.title}</h3>
-                  {project.liveLink ? (
-                    <div className="mt-5">
-                      <a href={project.liveLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">Live Demo</a>
-                    </div>
-                  ) : null}
-                </div>
-              </article>
-            ))}
-            {designProjects.slice(0, 1).map((project) => (
-              <article key={`${project.title}-service`} className="overflow-hidden rounded-[1.7rem] border border-white/10 bg-stone-900/80">
-                <img src={project.image} alt={project.title} className="h-44 w-full object-cover" />
-                <div className="p-5">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">{project.category}</p>
-                  <h3 className="mt-3 font-display text-2xl font-semibold text-white">{project.title}</h3>
-                </div>
-              </article>
-            ))}
-            {videoProjects.slice(0, 1).map((project) => (
-              <article key={`${project.title}-video-service`} className="overflow-hidden rounded-[1.7rem] border border-white/10 bg-stone-900/80">
-                <img src={project.image} alt={project.title} className="h-44 w-full object-cover" />
-                <div className="p-5">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">{project.category}</p>
-                  <h3 className="mt-3 font-display text-2xl font-semibold text-white">{project.title}</h3>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 pb-20 md:px-10">
-          <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-violet-500/10 via-stone-900 to-amber-500/10 p-8 md:p-12">
             <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
               <div>
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Contact</p>
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">Have a project in mind?</p>
                 <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Have a project in mind?</h2>
-                <p className="mt-4 max-w-xl text-base leading-7 text-stone-300 md:text-lg">If you need design, frontend development, or video editing, I&apos;d be happy to hear about the idea and see how it can come together.</p>
+                <p className="mt-4 max-w-xl text-base leading-7 text-stone-300 md:text-lg">Let&apos;s talk about what you&apos;re working on.</p>
               </div>
               <div className="flex flex-wrap gap-3 lg:justify-end">
-                <a href="/contact" className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200">Start a Conversation</a>
-                <a href="/projects" className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">View My Work</a>
+                <a href="/contact" className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">Contact Me</a>
+                <a href={cvFile} download className="inline-flex items-center justify-center rounded-full border border-violet-500/40 bg-violet-500/10 px-5 py-3 text-sm font-semibold text-violet-100 transition hover:border-violet-400 hover:bg-violet-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">Download CV</a>
               </div>
-            </div>
-            <div className="mt-8 grid gap-4 text-base text-stone-200 md:grid-cols-3">
-              <p><span className="text-stone-400">Location:</span>{' '}<span>Lagos, Ojo Itakete, Nigeria</span></p>
-              <p><span className="text-stone-400">Email:</span>{' '}<a href="mailto:nzelucharles98@gmail.com" className="text-violet-200 hover:text-violet-100">nzelucharles98@gmail.com</a></p>
-              <p><span className="text-stone-400">Phone:</span>{' '}<a href="tel:+2348149368077" className="text-violet-200 hover:text-violet-100">+234 8149368077</a></p>
             </div>
           </div>
         </section>
@@ -949,9 +828,7 @@ function ServicesPage() {
             <div className="flex flex-wrap items-center gap-5 text-sm text-stone-400">
               <a href="/" className="hover:text-white">Home</a>
               <a href="/about" className="hover:text-white">About</a>
-              <a href="/skills" className="hover:text-white">Skills</a>
               <a href="/projects" className="hover:text-white">Projects</a>
-              <a href="/services" className="hover:text-white">Services</a>
               <a href="/contact" className="hover:text-white">Contact</a>
             </div>
           </div>
@@ -1080,6 +957,18 @@ function ContactPage() {
                   </a>
                 </div>
                 <div>
+                  <p className="text-xs uppercase tracking-[0.22em] text-stone-400">Discord</p>
+                  <a
+                    href={contactInfo.discordUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open Charles T. Nzelu on Discord"
+                    className="mt-2 inline-block text-lg text-violet-200 transition hover:text-violet-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
+                  >
+                    Discord
+                  </a>
+                </div>
+                <div>
                   <p className="text-xs uppercase tracking-[0.22em] text-stone-400">Location</p>
                   <p className="mt-2 text-lg text-stone-200">Lagos, Ojo Itakete, Nigeria</p>
                 </div>
@@ -1091,6 +980,20 @@ function ContactPage() {
                 </a>
                 <a href={`tel:${contactInfo.phone}`} className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800">
                   Call Me
+                </a>
+              </div>
+
+              <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-stone-900/60 p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-stone-400">Discord</p>
+                <p className="mt-3 text-base leading-7 text-stone-300">Prefer chatting on Discord? You can reach me there.</p>
+                <a
+                  href={contactInfo.discordUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Open Charles T. Nzelu on Discord"
+                  className="mt-4 inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-900 px-4 py-2 text-sm font-semibold text-white transition hover:border-stone-500 hover:bg-stone-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
+                >
+                  Message me on Discord
                 </a>
               </div>
             </div>
@@ -1229,9 +1132,7 @@ function ContactPage() {
             <div className="flex flex-wrap items-center gap-5 text-sm text-stone-400">
               <a href="/" className="hover:text-white">Home</a>
               <a href="/about" className="hover:text-white">About</a>
-              <a href="/skills" className="hover:text-white">Skills</a>
               <a href="/projects" className="hover:text-white">Projects</a>
-              <a href="/services" className="hover:text-white">Services</a>
               <a href="/contact" className="hover:text-white">Contact</a>
             </div>
           </div>
@@ -1251,45 +1152,34 @@ function NotFoundPage() {
         <p className="mt-5 text-base leading-7 text-stone-300 md:text-lg">
           The page you’re looking for may have moved or no longer exists. Let’s get you back to the portfolio.
         </p>
-        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+        <div className="mt-8 flex justify-center">
           <a href="/" className={buttonPrimaryClass}>Back Home</a>
-          <a href="/projects" className={buttonSecondaryClass}>View Projects</a>
         </div>
       </div>
     </div>
   )
 }
 
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/projects" element={<ProjectsPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/skills" element={<Navigate to="/projects" replace />} />
+      <Route path="/services" element={<Navigate to="/projects" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  )
+}
+
 function App() {
-  const [page, setPage] = useState(() => {
-    const path = window.location.pathname
-    if (path === '/about') return 'about'
-    if (path === '/skills') return 'skills'
-    if (path === '/projects') return 'projects'
-    if (path === '/services') return 'services'
-    if (path === '/contact') return 'contact'
-    if (path === '/404' || path === '/not-found') return 'not-found'
-    if (path === '/' || path === '') return 'home'
-    return 'not-found'
-  })
-
-  useEffect(() => {
-    const handleLocationChange = () => {
-      const path = window.location.pathname
-      if (path === '/about') setPage('about')
-      else if (path === '/skills') setPage('skills')
-      else if (path === '/projects') setPage('projects')
-      else if (path === '/services') setPage('services')
-      else if (path === '/contact') setPage('contact')
-      else if (path === '/404' || path === '/not-found') setPage('not-found')
-      else if (path === '/' || path === '') setPage('home')
-      else setPage('not-found')
-    }
-    window.addEventListener('popstate', handleLocationChange)
-    return () => window.removeEventListener('popstate', handleLocationChange)
-  }, [])
-
-  return page === 'about' ? <AboutPage /> : page === 'skills' ? <SkillsPage /> : page === 'projects' ? <ProjectsPage /> : page === 'services' ? <ServicesPage /> : page === 'contact' ? <ContactPage /> : page === 'not-found' ? <NotFoundPage /> : <HomePage />
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  )
 }
 
 export default App
